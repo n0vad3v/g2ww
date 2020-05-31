@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gofiber/fiber"
 )
@@ -23,6 +24,16 @@ type Hook struct {
 	Title       string `json:"title"`
 }
 
+var sent_count int = 0
+
+func GwStat() func(c *fiber.Ctx) {
+	return func(c *fiber.Ctx) {
+		stat_msg := "G2WW Server created by Nova Kwok is running! \nParsed & forwarded " + strconv.Itoa(sent_count) + " messages to WeChat Work!"
+		c.Send(stat_msg)
+		return
+	}
+}
+
 func GwWorker() func(c *fiber.Ctx) {
 	return func(c *fiber.Ctx) {
 		h := new(Hook)
@@ -31,7 +42,6 @@ func GwWorker() func(c *fiber.Ctx) {
 			c.Send("Error on JSON format")
 			return
 		}
-		fmt.Println(h.Title)
 
 		// Send to WeChat Work
 
@@ -65,7 +75,6 @@ func GwWorker() func(c *fiber.Ctx) {
 			}
 		  }
 		`, h.Title, h.Message, h.RuleUrl, h.ImageUrl)
-		fmt.Println(msgStr)
 		jsonStr := []byte(msgStr)
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 		req.Header.Set("Content-Type", "application/json")
@@ -77,5 +86,6 @@ func GwWorker() func(c *fiber.Ctx) {
 		}
 		defer resp.Body.Close()
 		c.Send(resp)
+		sent_count++
 	}
 }

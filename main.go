@@ -13,6 +13,7 @@ func main() {
 
 	// Server Info
 	app.Use(compression.New())
+	app.Get("/", GwStat())
 	app.All("/:key", GwWorker())
 
 	app.Listen(ListenAddress)
