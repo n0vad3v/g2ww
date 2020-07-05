@@ -10,6 +10,15 @@ Grafana doesn't support push alert to WeChat Work(企業微信) by it's design, 
 go build *.go -o g2ww
 ```
 
+You can use docker if you don't want to build it yourself. Just download the [docker-compose.yml](https://raw.githubusercontent.com/n0vad3v/g2ww/master/docker-compose.yml) file, and `docker-compose up -d`
+
+```
+wget https://raw.githubusercontent.com/n0vad3v/g2ww/master/docker-compose.yml
+docker-compose up -d
+```
+
+Then g2ww will listen on `localhost:2408`, quite simple isn't it?
+
 ## Run g2ww
 
 Run `g2ww` on server, it will listen on `http://127.0.0.1:2408` by default, keep it running in background (`systemd` or `screen`?).
