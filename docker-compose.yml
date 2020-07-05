@@ -2,10 +2,10 @@ version: '3'
 
 services:
 
-    webp_server:
+    g2ww:
         image: n0vad3v/g2ww
         restart: always
         environment:
             DOCKER: tsuki
         ports:
-            - 2408:2408
+            - 127.0.0.1:2408:2408
