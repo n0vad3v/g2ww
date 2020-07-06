@@ -8,4 +8,5 @@ WORKDIR /g2ww
 
 RUN go build -o g2ww .
 
+ENV DOCKER=tsuki
 CMD ["/g2ww/g2ww"]
