@@ -1,12 +1,12 @@
-FROM golang:1.13-alpine3.11
+FROM golang:stretch AS build
 
-RUN mkdir /g2ww
+COPY .  /go/src
+WORKDIR /go/src
 
-ADD . /g2ww
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/g2ww *.go
 
-WORKDIR /g2ww
+FROM alpine
 
-RUN go build -o g2ww .
-
+COPY --from=build /go/bin/g2ww /g2ww
 ENV DOCKER=tsuki
-CMD ["/g2ww/g2ww"]
+CMD ["/g2ww"]
